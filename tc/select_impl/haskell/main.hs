@@ -13,6 +13,15 @@ median xs = sorted !! ix
   sorted = List.sort xs
   ix = length xs `div` 2
 
+-- Find multiple medians
+medians :: Ord a => [[a]] -> [a]
+medians (xs:xss) = concat [[median xs], medians xss]
+medians [] = []
+
+-- Find the medians of a list taken in 5s
+medians_of_5s :: Ord a => [a] -> [a]
+medians_of_5s = medians . divide_into_5s
+
 -- Partition using a custom pivot. The first parameter is an integer, which is
 -- an index into the list pointing to the pivot to use. If this is out of
 -- bounds of the given list, this function will throw.
