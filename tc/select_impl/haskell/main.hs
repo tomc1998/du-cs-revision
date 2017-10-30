@@ -1,4 +1,5 @@
 import qualified Data.List as List
+import Data.Maybe (fromJust)
 
 -- Recursively divide a list up into sublists of length 5.
 divide_into_5s :: [a] -> [[a]]
@@ -42,3 +43,8 @@ partition_custom_pivot pivot_ix xs =
   ]
   where pivot = xs !! pivot_ix
 
+-- Partition using the median of medians as a pivot.
+partition :: Ord a => [a] -> [a]
+partition xs = partition_custom_pivot (fromJust ix) xs
+  where
+  ix = List.elemIndex (median_of_medians xs) xs
