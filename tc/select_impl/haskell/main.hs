@@ -33,14 +33,25 @@ median_of_medians = median . medians_of_5s
 --
 -- Returns a tuple of 2 lists, the first is the sublist partitioned before the pivote, and the
 -- last is the sublist partitioned after the pivot.
-partition_custom_pivot :: Ord a => Int -> [a] -> ([a], [a])
+partition_custom_pivot :: Ord a => Int -> [a] -> [a]
 partition_custom_pivot pivot_ix xs = 
-  ( [y | y <- xs, y < pivot], 
-    [y | y <- xs, y > pivot] )
+  concat [
+    [y | y <- xs, y < pivot], 
+    [pivot], 
+    [y | y <- xs, y > pivot]
+  ]
   where pivot = xs !! pivot_ix
 
--- Partition using the median of medians as a pivot.
-partition :: Ord a => [a] -> ([a], [a])
-partition xs = partition_custom_pivot (fromJust ix) xs
+-- Return the 'ith order statistic' of the given list.
+select :: Ord a => Int -> [a] -> a
+select i [] = error "Trying to run func select on an empty list"
+select i xs 
+  | i == new_pivot_ix = m
+  | i < new_pivot_ix = select i (take sublist_len partitioned)
+  | otherwise = select (i - new_pivot_ix) (drop sublist_len partitioned)
   where
-  ix = List.elemIndex (median_of_medians xs) xs
+  sublist_len = length xs `div` 2
+  m = median_of_medians xs
+  pivot_ix = fromJust $ List.elemIndex m xs
+  partitioned = partition_custom_pivot pivot_ix xs
+  new_pivot_ix = fromJust $ List.elemIndex m partitioned
