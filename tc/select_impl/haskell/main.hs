@@ -1,3 +1,11 @@
+import qualified Data.List as List
+
+-- Recursively divide a list up into sublists of length 5.
+divide_into_5s :: [a] -> [[a]]
+divide_into_5s xs 
+  | null xs = []
+  | otherwise = concat [[(List.take 5 xs)], (divide_into_5s $ List.drop 5 xs)]
+
 
 -- Partition using a custom pivot. The first parameter is an integer, which is
 -- an index into the list pointing to the pivot to use. If this is out of
