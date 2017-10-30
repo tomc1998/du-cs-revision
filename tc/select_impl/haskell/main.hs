@@ -22,6 +22,10 @@ medians [] = []
 medians_of_5s :: Ord a => [a] -> [a]
 medians_of_5s = medians . divide_into_5s
 
+-- Find the median of medians of a list taken in 5s
+median_of_medians :: Ord a => [a] -> a
+median_of_medians = median . medians_of_5s
+
 -- Partition using a custom pivot. The first parameter is an integer, which is
 -- an index into the list pointing to the pivot to use. If this is out of
 -- bounds of the given list, this function will throw.
