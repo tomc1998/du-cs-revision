@@ -6,6 +6,12 @@ divide_into_5s xs
   | null xs = []
   | otherwise = concat [[(List.take 5 xs)], (divide_into_5s $ List.drop 5 xs)]
 
+-- Find the median of a list.
+median :: Ord a => [a] -> a
+median xs = sorted !! ix
+  where 
+  sorted = List.sort xs
+  ix = length xs `div` 2
 
 -- Partition using a custom pivot. The first parameter is an integer, which is
 -- an index into the list pointing to the pivot to use. If this is out of
